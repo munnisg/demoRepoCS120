@@ -1,0 +1,15 @@
+<html>
+<body>
+  <script>
+    let num1 = prompt("Please enter a number:")
+    let num2= prompt("Please enter a second number:")
+    let total = 0
+    for (i = Math.min(num1,num2); i <= Math.max(num1,num2);i++) {
+        if (i % 2 != 0) {
+            total += i
+        }
+    }
+    document.write(total)
+  </script>
+</body>
+</html>

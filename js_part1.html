@@ -1,0 +1,40 @@
+<html>
+<body>
+    <div>
+        <a href="" id="js1Link">Js 1</a>
+    </div>
+    <div>
+        <a href="" id="js2Link">Js 2</a>
+    </div>
+    <div>
+        <a href="" id="js3Link">Js 3</a>
+    </div>
+    <div>
+        <a href="" id="js4Link">Js 4</a>
+    </div>
+
+  <script>
+    const currUrl = window.location.href
+    let baseSite = currUrl.substring(0,currUrl.lastIndexOf('/'))
+    let js1Url = baseSite + "/js1"
+    let js2Url = baseSite + "/js2"
+    let js3Url = baseSite + "/js3"
+    let js4Url = baseSite + "/js4"
+    if (!baseSite.includes("github")) {
+        js1Url = js1Url + ".html"
+        js2Url = js2Url + ".html"
+        js3Url = js3Url + ".html"
+        js4Url = js4Url + ".html"
+    }
+
+    let temp1 = document.getElementById("js1Link")
+    temp1.href = js1Url
+    let temp2 = document.getElementById("js2Link")
+    temp2.href = js2Url
+    let temp3 = document.getElementById("js3Link")
+    temp3.href = js3Url
+    let temp4 = document.getElementById("js4Link")
+    temp4.href = js4Url
+  </script>
+</body>
+</html>

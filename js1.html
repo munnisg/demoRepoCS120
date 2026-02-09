@@ -1,0 +1,24 @@
+<html>
+<body>
+    <p id="numChildren"></p>
+  <script>
+    let firstName = prompt("Please enter your first name:","First Name")
+    let lastName = prompt("Please enter your last name:","Last Name")
+    if (firstName != null && lastName != null) {
+        alert("Your name is " + firstName + " " + lastName)
+    }
+
+    let childNum = prompt("How many children do you have?")
+    const pageEl = document.getElementById("numChildren")
+    if (childNum == 0) {
+        pageEl.innerHTML = "You have no children"
+    }
+    else if (childNum == 1) {
+        pageEl.innerHTML = "You have 1 child"
+    }
+    else {
+        pageEl.innerHTML = "You have " + childNum + " children"
+    }
+  </script>
+</body>
+</html>

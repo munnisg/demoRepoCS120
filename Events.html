@@ -7,10 +7,26 @@
             color: mediumpurple;
             text-shadow: 4px 4px 4px indigo;
         }
-        h2 {
-            color:lightgray;
-            padding-left:10vw;
+        table {
+            margin-left:5%;
+            border-spacing:0;
+            width:50%;
         }
+        th {
+            font-size:1.5vw;
+            text-align:left;
+            padding-left:1vw;
+        }
+        td {
+            border:lightgray;
+            padding-left:1vw;
+            font-size:1vw;
+        }
+        tr {
+            background-color:gray;
+            height:5vh;
+        }
+        tr:nth-child(even){background-color:lightgray;}
     </style>
   <link rel="stylesheet" href="FixedItems.css">
 </head>
@@ -32,12 +48,33 @@
     <div class="main">
         <div class="banner-image"></div>
         <h1 style="font-size:4vw;padding-left:2vw">Upcoming Events:</h1>
-        <h1>Boston, MA - March 10, 2026</h1>
-        <h2>- Paddy's Bar and Grill, 42 Adams Way</h2>
-        <h1>Marlborough, MA - March 24, 2026</h1>
-        <h2>- 57 South St</h2>
-        <h1>Boxborough, MA - March 10, 2026</h1>
-        <h2 style="padding-bottom:5vh;">- Rita's, 140 Main St</h2>
+        <table>
+            <tr style="background-color:mediumpurple;height:6vh;">
+                <th>City/State</th>
+                <th>Date</th>
+                <th>Address</th>
+            </tr>
+            <tr>
+                <td>Boston, MA</td>
+                <td>March 10, 2026</td>
+                <td>Paddy's Bar and Grill, 42 Adams Way</td>
+            </tr>
+            <tr>
+                <td>Marlborough, MA</td>
+                <td>March 24, 2026</td>
+                <td>57 South St</td>
+            </tr>
+            <tr>
+                <td>Worcester, MA</td>
+                <td>March 30, 2026</td>
+                <td>Brew City, 101 Lexington St</td>
+            </tr>
+            <tr>
+                <td>Boston, MA</td>
+                <td>April 1, 2026</td>
+                <td>A Real Place, 111 Road St</td>
+            </tr>
+        </table>
     </div>
 </body>
 </html>

@@ -1,0 +1,24 @@
+<html>
+<body>
+    <div id="answer">
+        <form>
+            <input type="text" id="inputBox">
+            <input type="button" id="helloButton" value="Hello">
+            <input type="button" id="goodbyeButton" value="Good Bye">
+            <input type="button" id="greetingsButton" value="Greetings">
+        </form>
+    </div>
+    <script>
+        window.onload = function() {
+            document.getElementById("helloButton").onclick = () => speak(document.getElementById("helloButton").value)
+            document.getElementById("goodbyeButton").onclick = () => speak(document.getElementById("goodbyeButton").value)
+            document.getElementById("greetingsButton").onclick = () => speak(document.getElementById("greetingsButton").value)
+        }
+        function speak(prefix) {
+            let inputBox = document.getElementById("inputBox")
+            // console.log(inputBox.value)
+            alert(prefix + " " + inputBox.value)
+        }
+    </script>
+</body>
+</html>

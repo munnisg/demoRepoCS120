@@ -1,0 +1,16 @@
+<html>
+<body>
+    <div id="answer"></div>
+    <script>
+        let str = "Sam,Alex,Micaela,James,Eric,Gil,Joe"
+        const strArray = str.split(',')
+        // console.log(strArray)
+        const answer = document.getElementById("answer")
+        const answerList = document.createElement("ol")
+        strArray.forEach(x => {
+            answerList.innerHTML += "<li>" + x + "</li>"
+        })
+        answer.append(answerList)
+    </script>
+</body>
+</html>

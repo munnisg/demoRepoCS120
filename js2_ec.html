@@ -1,0 +1,53 @@
+<html>
+<body>
+    <select id="stateSelect" size="10"></select>
+    <input type="button" id="addState" value="Add State">
+    <div style="border:solid">
+        <ol id="stateList"></ol>
+        <input type="button" id="clearStates" value="Clear States">
+    </div>
+    <script>
+        const stateArr = ["Massachusetts","Connecticut","Rhode Island","New Hampshire","Maine","Vermont","New York","Florida","California","Oregon"]
+        let set = false;
+        stateArr.forEach(x => {
+            if (set) {
+                document.getElementById("stateSelect").innerHTML += "<option value='" + x + "'>" + x + "</option>"
+            }
+            else {
+                document.getElementById("stateSelect").innerHTML += "<option selected='true' value='" + x + "'>" + x + "</option>"
+                set = true
+            }            
+        })
+
+        function addToList() {
+            document.getElementById("stateList").innerHTML += "<li>" + document.getElementById("stateSelect").value + "</li>"            
+            const stateSelect = document.getElementById("stateSelect")
+            const selectedIndex = stateSelect.selectedIndex
+            // console.log(selectedIndex)
+            if (selectedIndex != -1) {
+                stateSelect.remove(selectedIndex)
+            }
+        }
+
+        function clearList() {
+            document.getElementById("stateList").innerHTML = ""
+            document.getElementById("stateSelect").innerHTML = ""
+            let set = false;
+            stateArr.forEach(x => {
+            if (set) {
+                document.getElementById("stateSelect").innerHTML += "<option value='" + x + "'>" + x + "</option>"
+            }
+            else {
+                document.getElementById("stateSelect").innerHTML += "<option selected='true' value='" + x + "'>" + x + "</option>"
+                set = true
+            }            
+        })
+        }
+
+        window.onload = function() {
+            document.getElementById("addState").onclick = addToList            
+            document.getElementById("clearStates").onclick = clearList
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<html>
+<body>
+    <div id="answer">
+        <form>
+            <input type="text" id="inputBox">
+            <input type="button" value="Hello" onclick='speak("Hello")'>
+            <input type="button" value="Good Bye" onclick='speak("Good Bye")'>
+            <input type="button" value="Greetings" onclick='speak("Greetings")'>
+        </form>
+    </div>
+    <script>
+
+        function speak(prefix) {
+            let inputBox = document.getElementById("inputBox")
+            // console.log(inputBox.value)
+            alert(prefix + " " + inputBox.value)
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+[
+    {
+        "title":"Spillways",
+        "artist":"Ghost",
+        "year":"2022",
+        "genre":["Rock","Metal"]
+    },
+    {
+        "title":"Lachryma",
+        "artist":"Ghost",
+        "year":"2025",
+        "genre":["Rock","Metal"]
+    },
+    {
+        "title":"Babel",
+        "artist":"Mumford & Sons",
+        "year":"2012",
+        "genre":["Rock","Folk","Indie"]
+    },
+    {
+        "title":"Little Lion Man",
+        "artist":"Mumford & Sons",
+        "year":"2009",
+        "genre":["Rock","Metal"]
+    },
+    {
+        "title":"3 O'Clock Things",
+        "artist":"AJR",
+        "year":"2021",
+        "genre":["Pop"]
+    },
+    {
+        "title":"My Calling",
+        "artist":"AJR",
+        "year":"2015",
+        "genre":["Pop"]
+    },
+    {
+        "title":"Birdhouse in Your Soul",
+        "artist":"They Might Be Giants",
+        "year":"1990",
+        "genre":["Rock","Alternative"]
+    },
+    {
+        "title":"Man, It's So Loud in Here",
+        "artist":"They Might Be Giants",
+        "year":"2001",
+        "genre":["Rock","Alternative"]
+    },
+    {
+        "title":"Petrichor V",
+        "artist":"Chris Christodoulou",
+        "year":"2020",
+        "genre":["Electronic"]
+    },
+    {
+        "title":"Terra Pluviam",
+        "artist":"Chris Christodoulou",
+        "year":"2020",
+        "genre":["Electronic"]
+    }
+] 

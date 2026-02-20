@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+<head>    
+    <meta charset="utf-8">
+    <title>json1</title>
+    <script language="javascript">
+        function Song(title,artist,year,genre) {
+            this.title = title
+            this.artist = artist
+            this.year = year
+            this.genre = genre
+        }
+    </script>
+</head>
+<body>
+    <script language="javascript">
+        const songList = []
+        songList.push(new Song("Spillways","Ghost","2022",["Rock","Metal"]))
+        songList.push(new Song("Lachryma","Ghost","2025",["Rock","Metal"]))
+        songList.push(new Song("Babel","Mumford & Sons","2012",["Rock","Folk","Indie"]))
+        songList.push(new Song("Little Lion Man","Mumford & Sons","2009",["Rock","Folk","Indie"]))
+        songList.push(new Song("3 O'Clock Things","AJR","2021",["Pop"]))
+        songList.push(new Song("My Calling","AJR","2015",["Pop"]))
+        songList.push(new Song("Birdhouse in Your Soul","They Might Be Giants","1990",["Rock","Alternative"]))
+        songList.push(new Song("Man, It's So Loud in Here","They Might Be Giants","2001",["Rock","Alternative"]))
+        songList.push(new Song("Petrichor V","Chris Christodoulou","2020",["Electronic"]))
+        songList.push(new Song("Terra Pluviam","Chris Christodoulou","2020",["Electronic"]))
+        document.write(JSON.stringify(songList))
+        // document.write(JSON.stringify(songList[0])+"<br>")
+        // document.write(JSON.stringify(songList[1])+"<br>")
+        // document.write(JSON.stringify(songList[2])+"<br>")
+        // document.write(JSON.stringify(songList[3])+"<br>")
+        // document.write(JSON.stringify(songList[4])+"<br>")
+        // document.write(JSON.stringify(songList[5])+"<br>")
+        // document.write(JSON.stringify(songList[6])+"<br>")
+        // document.write(JSON.stringify(songList[7])+"<br>")
+        // document.write(JSON.stringify(songList[8])+"<br>")
+        // document.write(JSON.stringify(songList[9])+"<br>")
+    </script>
+</body>
+</html>

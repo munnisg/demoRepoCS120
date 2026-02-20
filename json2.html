@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <script
+        src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+        crossorigin="anonymous"></script>
+    <title>json2</title>
+</head>
+<body>
+    <div id="songList"></div>
+    <script>
+        $.getJSON("https://munnisg.github.io/demoRepoCS120/songs.json",function(data) {
+            let songStr = ""
+            let gIdx = 1
+            data.forEach(x => {
+                songStr = "<div style='padding-bottom:5px'>"
+                songStr += "<h2>" + x.title + "</h2>"
+                songStr += "<p>Artist: " + x.artist + "</br>"
+                songStr += "Genre: "
+                gIdx = 1
+                x.genre.forEach(g => {
+                    songStr += g
+                    if (gIdx < x.genre.length) {
+                        songStr += ", "
+                        gIdx++
+                    }
+                })
+                songStr += "</br>"
+                songStr += "Released " + x.year
+                songStr += "</p></div>"
+                document.getElementById("songList").innerHTML += songStr
+            })         
+        })
+    </script>
+</body>
+</html>

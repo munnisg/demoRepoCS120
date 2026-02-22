@@ -9,11 +9,11 @@
     display: flex;
     /* text-align: center; */
     height:8%;
-    width:30%;
+    width:100%;
     /* justify-self: center; */
     /* justify-content:center; */
     /* padding:1vh; */
-    min-width:600px;
+    max-width:600px;
     gap:2px;
     padding-bottom:4px;
     margin: 0 auto;
@@ -134,4 +134,5 @@ label {
 
 body {
     background: linear-gradient(lightgray,gray)
+
 }

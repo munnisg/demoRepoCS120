@@ -9,14 +9,20 @@
     display: flex;
     /* text-align: center; */
     height:8%;
-    width:100%;
+    width:30%;
     /* justify-self: center; */
     /* justify-content:center; */
     /* padding:1vh; */
-    max-width:600px;
+    min-width:600px;
     gap:2px;
     padding-bottom:4px;
     margin: 0 auto;
+}
+
+@media screen and (max-width: 768px) {
+    .guess-row {
+        width:100%
+    }
 }
 
 .guessCell {
@@ -136,3 +142,4 @@ body {
     background: linear-gradient(lightgray,gray)
 
 }
+

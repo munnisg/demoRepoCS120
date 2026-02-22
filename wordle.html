@@ -1,0 +1,245 @@
+<html>
+<head>
+    <title>Wordle 2 Electric Boogaloo</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="wordleStyle.css">
+
+    <script
+        src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+        crossorigin="anonymous"></script>
+
+    <script>
+        class Key {
+            constructor(letter) {
+                this.letter = letter
+                this.bgClass = "unset"            
+            }
+        }
+    </script>
+</head>
+<body>
+    <script>
+        let boardGenStr = "<div id='guessBoard' class='guessBoard'>"
+        for (j = 0; j < 6; j++) {
+            boardGenStr += guessCells(j)
+        }        
+
+        let inputStr = makeInputRow() 
+        boardGenStr += inputStr
+        document.write(boardGenStr)
+
+        const dictionary = ["fever","whale","levee","water","found","blood",
+            "pinto","beans","fresh","knock","broad","smile","frown","angry",
+            "crack","trips","final","teeth","groan","leave","inept","ovine",
+            "royal","tiles","kitty","yodel","north","south","sweep","green"]
+
+        let guessIdx = 0
+        // let avg = 0
+        let answer = dictionary[Math.floor(Math.random()*30)]
+        const keyboard = []
+        let gameOver = false
+
+        function guessCells(index)
+        {   
+            let rowStr = "<div id='guessRow" + (index+1) + "' class='guessRow'>"
+            const colArr = ["col1","col2","col3","col4","col5"]
+            colArr.forEach(x => {
+
+                rowStr += "<div class='guessCell " + x + "'></div>"
+
+            })
+            rowStr += "</div>"
+            return rowStr
+        }
+
+        async function checkGuess() 
+        {
+            let guess = document.getElementById("guessBox").value
+            if (guess.length != 5) {
+                alert("Your guess must be a 5-letter word!")
+                return
+            }
+
+            let entry = await wordCheck(guess)
+            if ('title' in entry) {
+                // console.log(entry.title)
+                alert(guess + " is not a real word!")
+                return
+            }
+
+            guessArr = guess.toUpperCase().split('')
+            const colArr = ["col1","col2","col3","col4","col5"]
+            ansArr = answer.toUpperCase().split('')
+            const seenLetter = []
+            let correctIdx = 0
+
+            for (i = 0; i < 5; i++) {
+                document.getElementsByClassName(colArr[i])[guessIdx].textContent = guessArr[i]
+                const inWord = ansArr.filter(w => w == guessArr[i])
+
+                if (guessArr[i] == ansArr[i]) {
+                    // console.log($(colArr[i]).eq(guessIdx).textContent)
+                    $("." + colArr[i]).eq(guessIdx).addClass("correct")
+                    // document.getElementsByClassName(colArr[i])[guessIdx].classList.add("correct")
+                    seenLetter.push(guessArr[i])
+                    keyboard.find(k => k.letter == guessArr[i]).bgClass = "correct"
+                    correctIdx++
+
+                    if (correctIdx == 5) {
+                        setTimeout(() => {
+                            alert("Congratulations! You win!")
+                            $("#resetButton").show()     
+                            $("#checkButton").prop("disabled",true)
+                            gameOver = true
+                            document.cookie += guessIdx + ","                      
+                        },500)
+                    }
+                }
+                else if (inWord.length > 0 && seenLetter.filter(w => w == guessArr[i]).length < inWord.length) {
+                    document.getElementsByClassName(colArr[i])[guessIdx].classList.add("wrongSpot")
+                    seenLetter.push(guessArr[i])
+                    if (keyboard.find(k => k.letter == guessArr[i]).bgClass != "correct") {
+                        keyboard.find(k => k.letter == guessArr[i]).bgClass = "wrongSpot"
+                    }
+                }
+                else {
+                    document.getElementsByClassName(colArr[i])[guessIdx].classList.add("wrong")
+                    keyboard.find(k => k.letter == guessArr[i]).bgClass = "wrong"
+                }
+            }
+            guessIdx++
+            updateKeyboard(false)
+
+            if (guessIdx == 6 && correctIdx < 5) {                            
+                setTimeout(() => {
+                    alert("Game Over! The word was " + answer.toUpperCase() + ".")
+                    $("#resetButton").show()
+                    $("#checkButton").prop("disabled",true)   
+                    gameOver = true  
+                    document.cookie += 6 + ","                   
+                },250)             
+            }
+        }
+
+        function makeInputRow() {
+            const prev = document.cookie.split(',').filter(Boolean)
+            let sum = 0
+            let avg = 0
+            if (prev.length > 0) {
+                prev.forEach(n => {
+                    sum += parseInt(n)
+                })
+                avg = Math.round(sum/prev.length)
+            }
+            
+            let inputRow = "<div id='inputRow' class='inputRow'>"
+            inputRow += "<div class='guessBox'><input id='guessBox' type='text' style='width:100%;heigth:50%;font-size:larger'><label id='avg' for='guessBox'>Average: "+ avg +" tries</label></div>"
+            inputRow += "<div class='guessButton'><input id='checkButton' type='button' value='Check Your Guess!' style='width:100%;height:50%;font-size:larger'></div>"
+            inputRow += "<div class='resetButton'><input id='resetButton' type='button' value='Play Again?' style='width:100%;height:50%;font-size:larger'></div>"
+            inputRow += "</div>"
+            return inputRow
+        }
+
+        function makeKeyboardRow(letterRow,indent) {
+            const outerRow = document.createElement("div")
+            outerRow.classList.add("keyRowWrapper")
+            const newRow = document.createElement("div")
+            newRow.classList.add("keyRow")
+            newRow.style.marginLeft = indent + "%"
+            letterRow.split('').forEach(x => {
+                let newKey = new Key(x)
+                keyboard.push(newKey)
+                const newKeyCell = document.createElement("div")
+                newKeyCell.id = "keyboard-" + x
+                newKeyCell.classList.add("keyCell", newKey.bgClass)
+                newKeyCell.textContent = x
+                newRow.appendChild(newKeyCell)
+            })
+            outerRow.appendChild(newRow)
+            document.getElementById("guessBoard").appendChild(outerRow)
+        }
+ 
+        function updateKeyboard(reset) {
+            if (reset) {
+                keyboard.forEach(k => {
+                    k.bgClass = "unset"
+                    $("#keyboard-" + k.letter).removeClass("correct wrongSpot wrong")
+                    if (k.letter == "D") {
+                        $("#keyboard-D").removeClass("wrong")
+                    }
+                })
+            }
+            else {
+                keyboard.forEach(k => {
+                    $("#keyboard-" + k.letter).removeClass("unset correct wrongSpot wrong")
+                    $("#keyboard-" + k.letter).addClass(k.bgClass)
+                })
+            }
+        }
+
+        function playAgain() {
+            $(".guessCell").removeClass("correct wrongSpot wrong")
+            $(".guessCell").text("")
+            $("#guessBox").val('')            
+            $("#checkButton").prop("disabled",false)
+            gameOver = false
+            guessIdx = 0
+            updateKeyboard(true)
+            $("#resetButton").hide()
+            answer = dictionary[Math.floor(Math.random()*30)]
+            const prev = document.cookie.split(',').filter(Boolean)
+            let sum = 0
+            let avg = 0
+            if (prev.length > 0) {
+                prev.forEach(n => {
+                    sum += parseInt(n)
+                })
+                avg = Math.round(sum/prev.length)
+            }
+            $("#avg").text("Average: " + avg + " tries") 
+        }
+
+        $(document).ready(function() {
+            $("#resetButton").hide()
+            $("#checkButton").click(() => checkGuess())
+            $(document).on('keydown',function(e) {
+                if (e.keyCode == 13) {
+                    e.preventDefault()
+                    if (!gameOver) {
+                        checkGuess()
+                    }
+                    else {
+                        playAgain()
+                    }                    
+                }
+            })
+            $("#resetButton").click(() => playAgain())
+        })
+
+        async function wordCheck(guess) {
+            const url = "https://api.dictionaryapi.dev/api/v2/entries/en/"
+            const options = {
+                method:"GET",
+            }
+
+            try {
+                const response = await fetch(url+guess,options)
+                const result = await response.text()
+                return JSON.parse(result)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
+        window.onload = function() {
+            // $("#checkButton").click = () => checkGuess()
+            makeKeyboardRow("QWERTYUIOP",0)
+            makeKeyboardRow("ASDFGHJKL",5)
+            makeKeyboardRow("ZXCVBNM",10)
+            // document.cookie = "3,"
+            console.log(document.cookie)
+        }
+    </script>
+</body>
+</html>

@@ -20,7 +20,15 @@
 }
 
 @media screen and (max-width: 768px) {
-    .guess-row {
+    .guessRow {
+        width:100%
+    }
+
+    .inputRow {
+        width:100%
+    }
+
+    .keyRow {
         width:100%
     }
 }
@@ -142,4 +150,5 @@ body {
     background: linear-gradient(lightgray,gray)
 
 }
+
 

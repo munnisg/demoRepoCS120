@@ -19,20 +19,6 @@
     margin: 0 auto;
 }
 
-@media screen and (max-width: 768px) {
-    .guessRow {
-        width:100%
-    }
-
-    .inputRow {
-        width:100%
-    }
-
-    .keyRow {
-        width:100%
-    }
-}
-
 .guessCell {
     background-color: white;
     display:inline-block;
@@ -148,7 +134,4 @@ label {
 
 body {
     background: linear-gradient(lightgray,gray)
-
 }
-
-

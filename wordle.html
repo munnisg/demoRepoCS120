@@ -10,6 +10,7 @@
         crossorigin="anonymous"></script>
 
     <script>
+        // Class used to store information about previously guessed letters
         class Key {
             constructor(letter) {
                 this.letter = letter
@@ -22,6 +23,7 @@
     <script>
         let boardGenStr = "<div id='guessBoard' class='guessBoard'>"
         for (j = 0; j < 6; j++) {
+            // Rows of the board are added one at a time
             boardGenStr += guessCells(j)
         }        
 
@@ -35,14 +37,17 @@
             "royal","tiles","kitty","yodel","north","south","sweep","green"]
 
         let guessIdx = 0
-        // let avg = 0
+        // Select a random word from the dictionary
         let answer = dictionary[Math.floor(Math.random()*30)]
         const keyboard = []
         let gameOver = false
 
+        // Generates the html for the guess board
         function guessCells(index)
         {   
             let rowStr = "<div id='guessRow" + (index+1) + "' class='guessRow'>"
+
+            // Assigns a common class to each cell in a given column
             const colArr = ["col1","col2","col3","col4","col5"]
             colArr.forEach(x => {
 
@@ -56,11 +61,14 @@
         async function checkGuess() 
         {
             let guess = document.getElementById("guessBox").value
+
+            // Confirm that the guess is long enough
             if (guess.length != 5) {
                 alert("Your guess must be a 5-letter word!")
                 return
             }
 
+            // Use an api call to freedictionaryapi.com to check if the word is valid
             let entry = await wordCheck(guess)
             if ('title' in entry) {
                 // console.log(entry.title)
@@ -71,24 +79,35 @@
             guessArr = guess.toUpperCase().split('')
             const colArr = ["col1","col2","col3","col4","col5"]
             ansArr = answer.toUpperCase().split('')
+
+            // Array used to hold all correct and wrongly placed letters tried,
+            // helps when dealing with multiples of a letter
             const seenLetter = []
             let correctIdx = 0
 
             for (i = 0; i < 5; i++) {
+                // Populate the cells of the current row with the letters of the current guess
                 document.getElementsByClassName(colArr[i])[guessIdx].textContent = guessArr[i]
+
+                // Check if the current letter is in the word
                 const inWord = ansArr.filter(w => w == guessArr[i])
 
+                // Check if the current letter is in the right spot
                 if (guessArr[i] == ansArr[i]) {
                     // console.log($(colArr[i]).eq(guessIdx).textContent)
+
+                    // Set background of cell containing current letter in current row to green
                     $("." + colArr[i]).eq(guessIdx).addClass("correct")
-                    // document.getElementsByClassName(colArr[i])[guessIdx].classList.add("correct")
                     seenLetter.push(guessArr[i])
                     keyboard.find(k => k.letter == guessArr[i]).bgClass = "correct"
                     correctIdx++
 
+                    // Check if all letters are correct
                     if (correctIdx == 5) {
                         setTimeout(() => {
                             alert("Congratulations! You win!")
+                            // Show the reset button, disable the Check button, and add the index of the current guess
+                            // to the calculation of the average number of guesses
                             $("#resetButton").show()     
                             $("#checkButton").prop("disabled",true)
                             gameOver = true
@@ -96,24 +115,37 @@
                         },500)
                     }
                 }
+                // Check if current letter is just in the wrong spot
                 else if (inWord.length > 0 && seenLetter.filter(w => w == guessArr[i]).length < inWord.length) {
                     document.getElementsByClassName(colArr[i])[guessIdx].classList.add("wrongSpot")
                     seenLetter.push(guessArr[i])
+
+                    // Set background of keyboard letter to yellow only if it is not already green
                     if (keyboard.find(k => k.letter == guessArr[i]).bgClass != "correct") {
                         keyboard.find(k => k.letter == guessArr[i]).bgClass = "wrongSpot"
                     }
                 }
+                // Deal with letters
                 else {
                     document.getElementsByClassName(colArr[i])[guessIdx].classList.add("wrong")
-                    keyboard.find(k => k.letter == guessArr[i]).bgClass = "wrong"
+                    // Set background of keyboard letter to gray only if it is not already green or yellow
+                    if (keyboard.find(k => k.letter == guessArr[i]).bgClass != "correct" && keyboard.find(k => k.letter == guessArr[i]).bgClass != "wrongSpot") {
+                        keyboard.find(k => k.letter == guessArr[i]).bgClass = "wrong"
+                    }
                 }
             }
             guessIdx++
+
+            // bgClass field of Key class is updated for each letter tried in the current guess,
+            // and then the html of the keyboard is updated in updateKeyboard()
             updateKeyboard(false)
 
+            // Check if this is the final allowable failure
             if (guessIdx == 6 && correctIdx < 5) {                            
                 setTimeout(() => {
                     alert("Game Over! The word was " + answer.toUpperCase() + ".")
+                    // Show the reset button, disable the Check button, and add a 6
+                    // to the calculation of the average number of guesses
                     $("#resetButton").show()
                     $("#checkButton").prop("disabled",true)   
                     gameOver = true  
@@ -122,6 +154,7 @@
             }
         }
 
+        // Generates the html for the input box, check button, and reset button
         function makeInputRow() {
             const prev = document.cookie.split(',').filter(Boolean)
             let sum = 0
@@ -135,13 +168,16 @@
             
             let inputRow = "<div id='inputRow' class='inputRow'>"
             inputRow += "<div class='guessBox'><input id='guessBox' type='text' style='width:100%;heigth:50%;font-size:larger'><label id='avg' for='guessBox'>Average: "+ avg +" tries</label></div>"
-            inputRow += "<div class='guessButton'><input id='checkButton' type='button' value='Check Guess' style='width:100%;height:50%;font-size:larger'></div>"
+            inputRow += "<div class='guessButton'><input id='checkButton' type='button' value='Check Your Guess!' style='width:100%;height:50%;font-size:larger'></div>"
             inputRow += "<div class='resetButton'><input id='resetButton' type='button' value='Play Again?' style='width:100%;height:50%;font-size:larger'></div>"
             inputRow += "</div>"
             return inputRow
         }
 
+        // Generates the html for a row of the 'previously tried' keyboard, takes in the letters
+        // for this row and the value of the indent for this row
         function makeKeyboardRow(letterRow,indent) {
+            // Row wrapper needed to allow for centered and staggered rows (Firefox doesn't like align-content)
             const outerRow = document.createElement("div")
             outerRow.classList.add("keyRowWrapper")
             const newRow = document.createElement("div")
@@ -160,17 +196,17 @@
             document.getElementById("guessBoard").appendChild(outerRow)
         }
  
+        // Updates the html for the 'previously tried' keyboard either after a guess or on a reset
         function updateKeyboard(reset) {
             if (reset) {
+                // Set each key back to the starding condition
                 keyboard.forEach(k => {
                     k.bgClass = "unset"
                     $("#keyboard-" + k.letter).removeClass("correct wrongSpot wrong")
-                    if (k.letter == "D") {
-                        $("#keyboard-D").removeClass("wrong")
-                    }
                 })
             }
             else {
+                // Update key html based on Key bgClass field set in checkGuess()
                 keyboard.forEach(k => {
                     $("#keyboard-" + k.letter).removeClass("unset correct wrongSpot wrong")
                     $("#keyboard-" + k.letter).addClass(k.bgClass)
@@ -178,6 +214,7 @@
             }
         }
 
+        // Reset the guess board and keyboard to the starting state, update average # of tries, pick a new word
         function playAgain() {
             $(".guessCell").removeClass("correct wrongSpot wrong")
             $(".guessCell").text("")
@@ -200,9 +237,11 @@
             $("#avg").text("Average: " + avg + " tries") 
         }
 
+        // Add event handlers to check guess and reset
         $(document).ready(function() {
             $("#resetButton").hide()
             $("#checkButton").click(() => checkGuess())
+            // Add an event handler to the enter key so we can use it to submit a guess or reset
             $(document).on('keydown',function(e) {
                 if (e.keyCode == 13) {
                     e.preventDefault()
@@ -217,6 +256,7 @@
             $("#resetButton").click(() => playAgain())
         })
 
+        // Use the freedictionaryapi.com api to check if the word is valid
         async function wordCheck(guess) {
             const url = "https://api.dictionaryapi.dev/api/v2/entries/en/"
             const options = {
@@ -232,6 +272,7 @@
             }
         }
 
+        // Generate the html for the three rows of the 'previously tried' keyboard
         window.onload = function() {
             // $("#checkButton").click = () => checkGuess()
             makeKeyboardRow("QWERTYUIOP",0)
@@ -242,5 +283,4 @@
         }
     </script>
 </body>
-
 </html>
